@@ -1,5 +1,4 @@
-import { NgFor } from '@angular/common';
-import { ChangeDetectorRef, Component, VERSION, inject } from '@angular/core';
+import { Component, VERSION } from '@angular/core';
 
 interface Data {
     id: number;
@@ -13,12 +12,9 @@ const nouns = ["table", "chair", "house", "bbq", "desk", "car", "pony", "cookie"
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [NgFor],
     templateUrl: './app.component.html',
 })
 export class AppComponent {
-    private cdr = inject(ChangeDetectorRef);
-
     data: Array<Data> = [];
     selected?: number = undefined;
     id: number = 1;
@@ -45,7 +41,6 @@ export class AppComponent {
     select(item: Data, event: Event) {
         event.preventDefault();
         this.selected = item.id;
-        this.cdr.detectChanges();
     }
 
     delete(item: Data, event: Event) {
@@ -56,34 +51,28 @@ export class AppComponent {
                 break;
             }
         }
-        this.cdr.detectChanges();
     }
 
     run() {
         this.data = this.buildData();
-        this.cdr.detectChanges();
     }
 
     add() {
         this.data = this.data.concat(this.buildData(1000));
-        this.cdr.detectChanges();
     }
 
     update() {
         for (let i = 0; i < this.data.length; i += 10) {
             this.data[i].label += ' !!!';
         }
-        this.cdr.detectChanges();
     }
     runLots() {
         this.data = this.buildData(10000);
         this.selected = undefined;
-        this.cdr.detectChanges();
     }
     clear() {
         this.data = [];
         this.selected = undefined;
-        this.cdr.detectChanges();
     }
     swapRows() {
         if (this.data.length > 998) {
@@ -91,6 +80,5 @@ export class AppComponent {
             this.data[1] = this.data[998];
             this.data[998] = a;
         }
-        this.cdr.detectChanges();
     }
 }
